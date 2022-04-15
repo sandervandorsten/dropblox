@@ -3,11 +3,11 @@ from typing import List, Tuple
 
 import numpy as np
 
-from common.data_models import Block, Field, Rewards, Solution
+from common.data_models import Block, Field, Rewards, Solution, SBlock
 
 
-def parse_puzzle(filename: str) -> Tuple[Field, List[Block], Rewards]:
-    """Parse puzzle specification into a Field, Block list and Rewards."""
+def parse_puzzle(filename: str) -> Tuple[Field, List[SBlock], Rewards]:
+    """Parse puzzle specification into a Field, SBlock list and Rewards."""
     lines = Path(filename).read_text().splitlines()
 
     width, height = map(int, lines.pop(0).split())
@@ -23,7 +23,7 @@ def parse_puzzle(filename: str) -> Tuple[Field, List[Block], Rewards]:
             "" if v == "0" else v for v in lines.pop(0).split()
         ]  # replace 0 with empty string for empty value
         values = np.reshape(values, (height, width))
-        blocks.append(Block(block_id, width, height, color, values))
+        blocks.append(SBlock(block_id, width, height, color, values))
 
     points = {}
     multiplication_factors = {}

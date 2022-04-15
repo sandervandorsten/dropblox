@@ -13,6 +13,8 @@ color_mapper = {
     "O": "🟧",
     "W": "⬜",
 }
+points_per_color = {'Y': 1, 'G': 3, 'B': 100, 'R': 8, 'P': 5, 'O': 5}
+
 
 
 @dataclass(frozen=True)
@@ -37,7 +39,26 @@ class Block:
             result_str += "\n"
         return result_str
 
-
+@dataclass(frozen=True)
+class SBlock(Block):
+    
+    @property
+    def value(self) -> int:
+        return sum(sum(self.values != '')) * points_per_color[self.color]
+    
+    @property
+    def value_per_area(self) -> float:
+        return round(self.value / (self.width * self.height), 2)
+    
+    
+    def full_row(self, row: int) -> bool:
+        if row > self.height - 1:
+            return false
+        return sum(self.values.T != '')[row] == self.width
+    
+    def __repr__(self):
+        return super().__repr__()
+    
 @dataclass(frozen=True)
 class Rewards:
     points: Dict[str, int]
